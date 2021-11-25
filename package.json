@@ -1,0 +1,30 @@
+{
+  "name": "react-native-cs-tag-group",
+  "version": "1.1.0",
+  "description": "A simple Tag component that supports both single and multiple selection.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hengsok/react-native-cs-tag-group.git"
+  },
+  "keywords": [
+    "react-native",
+    "tag-group",
+    "tags",
+    "tag-button",
+    "buttons",
+    "button-group",
+    "multiple",
+    "single",
+    "selection"
+  ],
+  "author": "aJIEw <ajiew42＠gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "https://github.com/hengsok/react-native-cs-tag-group"
+}
