@@ -48,12 +48,20 @@ export default class TagGroup extends Component {
     } = this.props;
 
     if (selectedTags && Array.isArray(selectedTags)) {
+      //build local copy of tagFlags as updating tagFlags in this.select is not immediate
+      let mTagFlags = [];
       for (let i = 0; i < this.props.source.length; i++) {
         const element = this.props.source[i];
         if (this.props.selectedTags.includes(element.value)) {
           this.select(i);
+          mTagFlags.push(true);
+        }
+        else{
+          mTagFlags.push(false);
         }
       }
+      const updatedSelectedTags = this.props.source.filter((value, index) => mTagFlags[index]);
+      this.props.onSelectedTagChange(updatedSelectedTags);
     }
   }
 
