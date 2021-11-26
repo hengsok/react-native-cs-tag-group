@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, ViewPropTypes } from "react-native";
 import PropTypes from 'prop-types';
 
-
 export default class TagGroup extends Component {
 
   static propTypes = {
@@ -15,7 +14,7 @@ export default class TagGroup extends Component {
     onSelectedTagChange: PropTypes.func.isRequired,
 
     //cs
-    selectedTags: PropTypes.arrayOf(PropTypes.string),
+    selectedTagValues: PropTypes.arrayOf(PropTypes.string),
 
     // start: props for Tag
     tintColor: PropTypes.string,
@@ -43,34 +42,51 @@ export default class TagGroup extends Component {
   }
 
   componentDidMount() {
+
     const {
-      selectedTags
+      selectedTagValues
     } = this.props;
 
-    if (selectedTags && Array.isArray(selectedTags)) {
-      //build local copy of tagFlags as updating tagFlags in this.select is not immediate
-      let mTagFlags = [];
-      for (let i = 0; i < this.props.source.length; i++) {
-        const element = this.props.source[i];
-        if (this.props.selectedTags.includes(element.value)) {
-          this.select(i);
-          mTagFlags.push(true);
+    if(selectedTagValues && Array.isArray(selectedTagValues) && selectedTagValues.length > 0){
+      const selectedTags = this.props.source.filter((tagObj, index) => selectedTagValues.includes(tagObj.value));
+
+      if(selectedTags && Array.isArray(selectedTags) && selectedTags.length > 0){
+        this.setState({ tagFlags: this.props.source.map(tagObj => selectedTagValues.includes(tagObj.value)) });
+
+        if (this.props.singleChoiceMode) {
+          this.props.onSelectedTagChange(selectedTags[0]);
         }
         else{
-          mTagFlags.push(false);
+          this.props.onSelectedTagChange(selectedTags);
         }
       }
-      const updatedSelectedTags = this.props.source.filter((value, index) => mTagFlags[index]);
-      this.props.onSelectedTagChange(updatedSelectedTags);
     }
+    
+
   }
 
-  shouldComponentUpdate(nextProps) {
-    // clear state when source array size changed
+
+  
+
+  shouldComponentUpdate(nextProps, nextState) {
     if (nextProps.source.length !== this.props.source.length) {
-      this.setState({ tagFlags: nextProps.source.map(value => false) });
-      for (let i = 0; i < nextProps.source.length; i++) {
-        this._tags[i] && this._tags[i].clearState();
+      const {
+        selectedTagValues
+      } = nextProps;
+  
+      if(selectedTagValues && Array.isArray(selectedTagValues) && selectedTagValues.length > 0){
+        const selectedTags = nextProps.source.filter((tagObj, index) => selectedTagValues.includes(tagObj.value));
+  
+        if(selectedTags && Array.isArray(selectedTags) && selectedTags.length > 0){
+          this.setState({ tagFlags: nextProps.source.map(tagObj => selectedTagValues.includes(tagObj.value)) });
+
+          if (this.props.singleChoiceMode) {
+            this.props.onSelectedTagChange(selectedTags[0]);
+          }
+          else{
+            this.props.onSelectedTagChange(selectedTags);
+          }
+        }
       }
       return false;
     }
@@ -80,13 +96,17 @@ export default class TagGroup extends Component {
   render() {
     return <View style={[styles.tagContainer].concat(this.props.style)}>
       {
-        this.props.source.map((value, index) =>
+        this.props.source.map((tagObj, index) =>
           <Tag key={index}
             ref={ref => this._tags[index] = ref}
-            text={value.label} {...this.props}
+            text={tagObj.label} {...this.props}
             tagStyle={[styles.tag, this.props.tagStyle]}
             allowUnselect={this.props.singleChoiceMode && this.state.tagFlags[index]}
-            onSelectStateChange={() => this._onTagPress(index)} />)
+            onSelectStateChange={() => this._onTagPress(index)} 
+            
+            //cs
+            isSelected={this.props.selectedTagValues && Array.isArray(this.props.selectedTagValues) && this.props.selectedTagValues.includes(tagObj.value)}
+            />)
       }
     </View>
   }
@@ -181,6 +201,9 @@ export class Tag extends Component {
     touchableOpacity: PropTypes.bool,
     // callback function when Tag is used as a button
     onPress: PropTypes.func,
+
+    //cs
+    isSelected: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -194,7 +217,7 @@ export class Tag extends Component {
     super(props);
 
     this.state = {
-      selected: false,
+      selected: props.isSelected ? props.isSelected : false,
     };
   }
 
