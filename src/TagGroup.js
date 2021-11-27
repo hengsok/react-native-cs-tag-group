@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, ViewPropTypes } from "react-native";
 import PropTypes from 'prop-types';
+const isEqual = require("react-fast-compare");
 
 export default class TagGroup extends Component {
 
@@ -42,12 +43,11 @@ export default class TagGroup extends Component {
   }
 
   componentDidMount() {
-
     const {
       selectedTagValues
     } = this.props;
 
-    if(selectedTagValues && Array.isArray(selectedTagValues) && selectedTagValues.length > 0){
+    if(this.props.source && selectedTagValues && Array.isArray(selectedTagValues) && selectedTagValues.length > 0){
       const selectedTags = this.props.source.filter((tagObj, index) => selectedTagValues.includes(tagObj.value));
 
       if(selectedTags && Array.isArray(selectedTags) && selectedTags.length > 0){
@@ -61,19 +61,19 @@ export default class TagGroup extends Component {
         }
       }
     }
-    
-
   }
 
 
-  
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.source.length !== this.props.source.length) {
+    if (!isEqual(nextState, this.state)) {
+			return true;
+		}
+		if (!isEqual(nextProps, this.props)) {
       const {
         selectedTagValues
       } = nextProps;
-  
+
       if(selectedTagValues && Array.isArray(selectedTagValues) && selectedTagValues.length > 0){
         const selectedTags = nextProps.source.filter((tagObj, index) => selectedTagValues.includes(tagObj.value));
   
@@ -88,15 +88,15 @@ export default class TagGroup extends Component {
           }
         }
       }
-      return false;
-    }
-    return true;
+			return true;
+		}
+		return false;
   }
 
   render() {
     return <View style={[styles.tagContainer].concat(this.props.style)}>
       {
-        this.props.source.map((tagObj, index) =>
+        this.props.source && this.props.source.map((tagObj, index) =>
           <Tag key={index}
             ref={ref => this._tags[index] = ref}
             text={tagObj.label} {...this.props}
