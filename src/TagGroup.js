@@ -74,6 +74,16 @@ export default class TagGroup extends Component {
         selectedTagValues
       } = nextProps;
 
+
+
+      //reset
+      this.setState({tagFlags: nextProps.source.map(value => false)});
+      for (let i = 0; i < nextProps.source.length; i++) {
+        this._tags[i] && this._tags[i].clearState();
+      }
+
+      // console.debug(nextState);
+
       if(selectedTagValues && Array.isArray(selectedTagValues) && selectedTagValues.length > 0){
         const selectedTags = nextProps.source.filter((tagObj, index) => selectedTagValues.includes(tagObj.value));
   
