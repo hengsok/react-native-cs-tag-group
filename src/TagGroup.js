@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet, TouchableWithoutFeedback, TouchableOpacity, ViewPropTypes } from "react-native";
 import PropTypes from 'prop-types';
-const isEqual = require("react-fast-compare");
+import isEqual from "react-fast-compare";
 
 export default class TagGroup extends Component {
 
@@ -81,8 +81,6 @@ export default class TagGroup extends Component {
       for (let i = 0; i < nextProps.source.length; i++) {
         this._tags[i] && this._tags[i].clearState();
       }
-
-      // console.debug(nextState);
 
       if(selectedTagValues && Array.isArray(selectedTagValues) && selectedTagValues.length > 0){
         const selectedTags = nextProps.source.filter((tagObj, index) => selectedTagValues.includes(tagObj.value));
