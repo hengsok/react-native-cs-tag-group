@@ -14,7 +14,7 @@ A simple Tag component that supports both single and multiple selection.
 
 ### Installation
 ```sh
-yarn add yarn add https://github.com/hengsok/react-native-cs-tag-group.git
+yarn add https://github.com/hengsok/react-native-cs-tag-group.git
 or
 npm install https://github.com/hengsok/react-native-cs-tag-group.git
 ```
@@ -29,13 +29,13 @@ import TagGroup from 'react-native-cs-tag-group';
 render() {
   return (
     <TagGroup
-								ref={ref => this.tagGroup = ref}
-								singleChoiceMode
-								source={[{"label": "Strawberry", "value": "testvalue1"}, {"label": "Mango", "value": "testvalue2"}]}
-								onSelectedTagChange={(selected) => { this.setState({selected}); }}
+		  ref={ref => this.tagGroup = ref}
+			singleChoiceMode
+			source={[{"label": "Strawberry", "value": "testvalue1"}, {"label": "Mango", "value": "testvalue2"}]}
+			onSelectedTagChange={(selected) => { this.setState({selected}); }}
 								
-								selectedTagValues={['testvalue1']}
-							/>
+			selectedTagValues={['testvalue1']}
+		/>
   );
 }
 ```
