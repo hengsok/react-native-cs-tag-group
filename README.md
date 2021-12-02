@@ -2,6 +2,10 @@
 
 [![](https://img.shields.io/npm/v/react-native-tag-group)](https://www.npmjs.com/package/react-native-tag-group) [![](https://img.shields.io/npm/l/react-native-tag-group)](https://github.com/aJIEw/react-native-tag-group/blob/master/LICENSE)
 
+* Forked from https://github.com/aJIEw/react-native-tag-group but made further improvements. 
+1) Introduced new prop "selectedTagValues" which allows you to specify an array of values that will be pre-selected on initialised or everytime when "source" prop is updated
+2) Instead of allowing only an array of strings in source, we now allow an array of object in source with the format [{"label": "Strawberry", "value": "testvalue1"}, {"label": "Mango", "value": "testvalue2"}]
+
 A simple Tag component that supports both single and multiple selection.
 
 <a href="https://raw.githubusercontent.com/aJIEw/react-native-tag-group/master/assets/screenshot_ios.png" target="_blank"><img src='https://github.com/aJIEw/react-native-tag-group/blob/master/assets/screenshot_ios.png' width='30%'/></a><a href="https://raw.githubusercontent.com/aJIEw/react-native-tag-group/master/assets/screenshot_android.png" target="_blank"><img src='https://github.com/aJIEw/react-native-tag-group/blob/master/assets/screenshot_android.png' width='30%'/></a>
@@ -9,25 +13,29 @@ A simple Tag component that supports both single and multiple selection.
 ## Get Started
 
 ### Installation
-
 ```sh
-npm i react-native-tag-group --save
+yarn add yarn add https://github.com/hengsok/react-native-cs-tag-group.git
+or
+npm install https://github.com/hengsok/react-native-cs-tag-group.git
 ```
 
 ### TagGroup Usage
 
 ```js
-import TagGroup from 'react-native-tag-group';
+import TagGroup from 'react-native-cs-tag-group';
 
 // ...
 
 render() {
   return (
-    <TagGroup 
-      ref={ref => this.tagGroup = ref}
-      source={['One', 'Two', 'Three']}
-      onSelectedTagChange={(selected) => { this.setState({selected}); }}
-    />
+    <TagGroup
+								ref={ref => this.tagGroup = ref}
+								singleChoiceMode
+								source={[{"label": "Strawberry", "value": "testvalue1"}, {"label": "Mango", "value": "testvalue2"}]}
+								onSelectedTagChange={(selected) => { this.setState({selected}); }}
+								
+								selectedTagValues={['testvalue1']}
+							/>
   );
 }
 ```
